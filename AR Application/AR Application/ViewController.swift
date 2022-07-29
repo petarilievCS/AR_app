@@ -97,6 +97,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         rollAllDice()
     }
     
+    @IBAction func removeDice(_ sender: UIBarButtonItem) {
+        if !dice.isEmpty {
+            for diceNode in dice {
+                diceNode.removeFromParentNode()
+            }
+        }
+    }
+    
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         rollAllDice()
     }
