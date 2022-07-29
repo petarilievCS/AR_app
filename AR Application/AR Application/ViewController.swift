@@ -59,6 +59,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         actualLocation.worldTransform.columns.3.y + diceNode.boundingSphere.radius,
                         actualLocation.worldTransform.columns.3.z)
                     sceneView.scene.rootNode.addChildNode(diceNode)
+                    
+                    // create random rotation angles
+                    let randomX = Float((arc4random_uniform(4) + 1)) * (Float.pi / 2)
+                    let randomZ = Float((arc4random_uniform(4) + 1)) * (Float.pi / 2)
+                    
+                    diceNode.runAction(SCNAction.rotateBy(
+                        x: CGFloat(randomX) * 5,
+                        y: 0.0,
+                        z: CGFloat(randomZ) * 5,
+                        duration: 0.5))
                 }
             }
         }
