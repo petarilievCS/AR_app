@@ -48,6 +48,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        // check if there was a touch
+        if let touch = touches.first {
+            
+            let location = touch.location(in: sceneView)
+            let locationInSpace = sceneView.hitTest(location, types: .existingPlaneUsingExtent)
+            
+            if !locationInSpace.isEmpty {
+                print("We hit a plane!")
+            } else {
+                print("Didn't touch a plane!")
+            }
+        }
+    }
+    
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         
         if anchor is ARPlaneAnchor {
@@ -65,7 +81,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             let gridMaterial = SCNMaterial()
             gridMaterial.diffuse.contents = UIImage(named: "art.scnassets/grid.png")
-            plane.materials = [gridMaterial]
+             
             
             planeNode.geometry = plane
             node.addChildNode(planeNode)
