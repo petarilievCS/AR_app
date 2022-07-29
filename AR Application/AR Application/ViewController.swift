@@ -10,6 +10,8 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
+    
+    var dice = [SCNNode]()
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -58,17 +60,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         actualLocation.worldTransform.columns.3.x,
                         actualLocation.worldTransform.columns.3.y + diceNode.boundingSphere.radius,
                         actualLocation.worldTransform.columns.3.z)
+                    dice.append(diceNode)
                     sceneView.scene.rootNode.addChildNode(diceNode)
-                    
-                    // create random rotation angles
-                    let randomX = Float((arc4random_uniform(4) + 1)) * (Float.pi / 2)
-                    let randomZ = Float((arc4random_uniform(4) + 1)) * (Float.pi / 2)
-                    
-                    diceNode.runAction(SCNAction.rotateBy(
-                        x: CGFloat(randomX) * 5,
-                        y: 0.0,
-                        z: CGFloat(randomZ) * 5,
-                        duration: 0.5))
+                    roll(diceNode)
                 }
             }
         }
@@ -97,5 +91,34 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             node.addChildNode(planeNode)
         }
         return
+    }
+    
+    @IBAction func rollAll(_ sender: Any) {
+        rollAllDice()
+    }
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        rollAllDice()
+    }
+    
+    func rollAllDice() {
+        if !dice.isEmpty {
+            for die in dice {
+                roll(die)
+            }
+        }
+    }
+    
+    func roll(_ diceNode: SCNNode) {
+        
+        // create random rotation angles
+        let randomX = Float((arc4random_uniform(4) + 1)) * (Float.pi / 2)
+        let randomZ = Float((arc4random_uniform(4) + 1)) * (Float.pi / 2)
+        
+        diceNode.runAction(SCNAction.rotateBy(
+            x: CGFloat(randomX) * 5,
+            y: 0.0,
+            z: CGFloat(randomZ) * 5,
+            duration: 0.5))
     }
 }
